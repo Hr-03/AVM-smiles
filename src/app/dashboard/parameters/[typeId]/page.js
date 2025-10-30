@@ -38,9 +38,9 @@ console.log(headerData);
     queryKey: ["parameterType",parameterData?.parameterTypeId,headerData?.region,user],
      queryFn: () =>
     getParameterTypeData(
-      parameterData?.parameterTypeId,
       headerData?.region??"0",
-      user
+      user,
+      parameterData?.parameterTypeId,
     ),
   enabled: !!parameterData && !!headerData && !!user,
     // staleTime: 1000 * 60 * 5, // optional cache time (5 mins)
