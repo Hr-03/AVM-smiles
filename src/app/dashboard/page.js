@@ -259,11 +259,7 @@ console.log(formatted);
     const totalRevenue = revenueBreakupData.reduce((sum, item) => sum + item.value, 0);
 
 
-    const handleLogout = () => {
-  // Example logic — adjust for your app
-  localStorage.removeItem("token");
-    router.push("/"); 
-};
+    
 
 
   if (isLoading) return <p>Loading dashboard...</p>;
@@ -274,61 +270,66 @@ console.log(formatted);
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-950 p-6 space-y-8 transition-colors duration-300">
       {/* Header */}
  {/* Header (Fixed) */}
-<header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-br from-gray-100/90 to-gray-200/90 dark:from-gray-900/80 dark:to-gray-950/80 backdrop-blur-md border-b border-gray-300 dark:border-gray-800 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-  <div className="flex gap-1 items-center">
-    <LayoutDashboard className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-    <span className="text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight">
-      Dashboard
-    </span>
-  </div>
+<header className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-sm px-6 py-4 mb-2 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      {/* Left Section */}
+      {/* <div className="flex items-center gap-2">
+        <LayoutDashboard className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+        <h1 className="text-xl font-semibold text-gray-900 dark:text-white tracking-tight">
+          Dashboard
+        </h1>
+      </div> */}
 
-  <div className="flex flex-wrap gap-4 items-center">
-    {/* Region Selector */}
-    <Select onValueChange={(value)=>{
-      setRegion(value)
-      dispatch(setHeaderData({region:value,period:null}))
-      }} value={region}>
-      <SelectTrigger className="w-[160px] bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm text-sm font-medium">
-        <SelectValue placeholder="Region" />
-      </SelectTrigger>
-      <SelectContent>
-        {[{regionName:"All",regionValue:"0"},{regionName:"East",regionValue:"1"},{regionName:"West",regionValue:"2"},{regionName:"North",regionValue:"3"},{regionName:"South",regionValue:"4"},{regionName:"Central",regionValue:"5"}].map((r) => (
-          <SelectItem key={r.regionValue} value={r.regionValue}>
-            {r.regionName}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-
-    {/* Period Buttons */}
-    <div className="flex gap-2">
-      {periods.map((p) => (
-        <Button
-          key={p.id}
-          size="sm"
-          variant={period === p.id ? "default" : "outline"}
-          onClick={() =>{
-             setPeriod(p.id)
-      dispatch(setHeaderData({region:null,period:p.id}))
-            
-            }}
-          className="rounded-full px-4"
+      {/* Right Controls */}
+      <div className="flex flex-wrap gap-4 items-center justify-end">
+        {/* Region Selector */}
+        <Select
+          onValueChange={(value) => {
+            setRegion(value);
+            dispatch(setHeaderData({ region: value, period: null }));
+          }}
+          value={region}
         >
-          {p.label}
-        </Button>
-      ))}
-    </div>
-    <Button
-  variant="outline"
-  size="sm"
-  className="rounded-full px-3 text-red-600 border-red-400 hover:bg-red-100 dark:hover:bg-red-950 hover:cursor-pointer"
-  onClick={handleLogout}
->
-  <LogOut className="w-4 h-4 mr-1" /> Logout
-</Button>
+          <SelectTrigger className="w-[160px] bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md text-sm font-medium">
+            <SelectValue placeholder="Region" />
+          </SelectTrigger>
+          <SelectContent>
+            {[
+              { regionName: "All", regionValue: "0" },
+              { regionName: "East", regionValue: "1" },
+              { regionName: "West", regionValue: "2" },
+              { regionName: "North", regionValue: "3" },
+              { regionName: "South", regionValue: "4" },
+              { regionName: "Central", regionValue: "5" },
+            ].map((r) => (
+              <SelectItem key={r.regionValue} value={r.regionValue}>
+                {r.regionName}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
-  </div>
-</header>
+        {/* Period Buttons */}
+        <div className="flex flex-wrap gap-2">
+          {periods.map((p) => (
+            <Button
+              key={p.id}
+              size="sm"
+              variant={period === p.id ? "default" : "outline"}
+              onClick={() => {
+                setPeriod(p.id);
+                dispatch(setHeaderData({ region: null, period: p.id }));
+              }}
+              className="rounded-full px-4"
+            >
+              {p.label}
+            </Button>
+          ))}
+        </div>
+
+        {/* Logout */}
+       
+      </div>
+    </header>
 {period!=="All"?
 <div className="pt-20 space-y-8">
 
@@ -520,7 +521,7 @@ console.log(formatted);
         </CardContent>
       </Card>
       </div>:
-      <div className="pt-20 space-y-8">
+      <div className="pt-5 space-y-8">
       <Card className="bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm border dark:border-gray-700 p-0">
         <CardContent className="p-4">
           <h3 className="text-sm font-semibold text-gray-800 dark:text-white mb-4">
@@ -547,11 +548,11 @@ console.log(formatted);
                 parameterTypeId:grouped.type
               }))
             }}>{grouped.parameters}</TableCell>     
-            <TableCell className="text-right border">{grouped.yesterday}</TableCell>
-            <TableCell className="text-right border">{grouped.days7}</TableCell>
-            <TableCell className="text-right border">{grouped.days30}</TableCell>
-            <TableCell className="text-right border">{grouped.days90}</TableCell>
-            <TableCell className="text-right border">{grouped.days365}</TableCell>
+            <TableCell className="text-right border">{Math.round(grouped.yesterday).toLocaleString("en-In")}</TableCell>
+            <TableCell className="text-right border">{Math.round(grouped.days7).toLocaleString("en-In")}</TableCell>
+            <TableCell className="text-right border">{Math.round(grouped.days30).toLocaleString("en-In")}</TableCell>
+            <TableCell className="text-right border">{Math.round(grouped.days90).toLocaleString("en-In")}</TableCell>
+            <TableCell className="text-right border">{Math.round(grouped.days365).toLocaleString("en-In")}</TableCell>
           </TableRow>
         ))}
       </TableBody>

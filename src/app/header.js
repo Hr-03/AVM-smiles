@@ -1,6 +1,13 @@
 "use client";
+
 import { LayoutDashboard, LogOut } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { useDispatch } from "react-redux";
 import { setHeaderData } from "@/store/slices/headerSlice";
@@ -28,15 +35,18 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-br from-gray-100/90 to-gray-200/90 dark:from-gray-900/80 dark:to-gray-950/80 backdrop-blur-md border-b border-gray-300 dark:border-gray-800 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-      <div className="flex gap-1 items-center">
+    <header className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-sm px-6 py-4 mb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      {/* Left Section */}
+      <div className="flex items-center gap-2">
         <LayoutDashboard className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-        <span className="text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+        <h1 className="text-xl font-semibold text-gray-900 dark:text-white tracking-tight">
           Dashboard
-        </span>
+        </h1>
       </div>
 
-      <div className="flex flex-wrap gap-4 items-center">
+      {/* Right Controls */}
+      <div className="flex flex-wrap gap-4 items-center justify-end">
+        {/* Region Selector */}
         <Select
           onValueChange={(value) => {
             setRegion(value);
@@ -44,7 +54,7 @@ export default function Header() {
           }}
           value={region}
         >
-          <SelectTrigger className="w-[160px] bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm border border-gray-300 dark:border-gray-700 rounded-lg shadow-sm text-sm font-medium">
+          <SelectTrigger className="w-[160px] bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md text-sm font-medium">
             <SelectValue placeholder="Region" />
           </SelectTrigger>
           <SelectContent>
@@ -63,7 +73,8 @@ export default function Header() {
           </SelectContent>
         </Select>
 
-        <div className="flex gap-2">
+        {/* Period Buttons */}
+        <div className="flex flex-wrap gap-2">
           {periods.map((p) => (
             <Button
               key={p.id}
@@ -80,10 +91,11 @@ export default function Header() {
           ))}
         </div>
 
+        {/* Logout */}
         <Button
           variant="outline"
           size="sm"
-          className="rounded-full px-3 text-red-600 border-red-400 hover:bg-red-100 dark:hover:bg-red-950 hover:cursor-pointer"
+          className="rounded-full px-3 text-red-600 border-red-400 hover:bg-red-100 dark:hover:bg-red-950"
           onClick={handleLogout}
         >
           <LogOut className="w-4 h-4 mr-1" /> Logout
