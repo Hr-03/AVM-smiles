@@ -16,6 +16,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import Image from "next/image";
 
 export default function Sidebar({ open }) {
   const [analyticsOpen, setAnalyticsOpen] = useState(false);
@@ -29,15 +30,14 @@ export default function Sidebar({ open }) {
     >
       {/* Logo */}
       <div className="flex items-center justify-center h-16 border-b border-border">
-        <span className="text-xl font-bold">{open ? "AVM Smiles" : "😊"}</span>
+        <span className="text-xl font-bold">{open ? <Image src="/AVM logo.png" width={80} height={80}/> : "AVM"}</span>
       </div>
 
       <nav className="mt-6 space-y-1">
         {/* Dashboard */}
         <SidebarItem href="/dashboard" icon={<Home size={20} />} label="Dashboard" open={open} />
 
-        {/* Analytics Dropdown */}
-        <Collapsible open={analyticsOpen} onOpenChange={setAnalyticsOpen}>
+        {/* <Collapsible open={analyticsOpen} onOpenChange={setAnalyticsOpen}>
           <CollapsibleTrigger asChild>
             <button
               className={cn(
@@ -63,11 +63,11 @@ export default function Sidebar({ open }) {
           </CollapsibleContent>
         </Collapsible>
 
-        {/* Users */}
-        <SidebarItem href="/users" icon={<Users size={20} />} label="Users" open={open} />
+       <SidebarItem href="/users" icon={<Users size={20} />} label="Users" open={open} />
 
-        {/* Settings */}
         <SidebarItem href="/settings" icon={<Settings size={20} />} label="Settings" open={open} />
+      */}
+     
       </nav>
     </aside>
   );

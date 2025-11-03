@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useLogin } from "@/api/auth";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@/store/slices/authSlice";
+import Image from "next/image";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -40,8 +41,9 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-4">
       <Card className="w-full max-w-md border-gray-700 bg-gray-900 text-gray-100 shadow-2xl">
         <CardHeader>
-          <CardTitle className="text-center text-2xl font-bold text-white">
-Orthosquare          </CardTitle>
+          <CardTitle className="text-center text-2xl font-bold text-white items-center justify-center flex">
+<Image src="/AVM logo.png" width={100} height={100} alt="logo" className=""/>         
+ </CardTitle>
         </CardHeader>
 
         <CardContent className="space-y-6">
