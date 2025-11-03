@@ -1,126 +1,139 @@
 "use client";
 
-import { getParameterTypeData } from '@/api/parameterType';
-import { Card, CardContent } from '@/components/ui/card'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { useQuery } from '@tanstack/react-query';
-import React, { useEffect, useState,useRef } from 'react'
-import { useSelector } from 'react-redux';
-import { useVirtualizer } from '@tanstack/react-virtual';
-import { ArrowLeft } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { getParameterTypeData } from "@/api/parameterType";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { useQuery } from "@tanstack/react-query";
+import React, { useEffect, useState, useRef } from "react";
+import { useSelector } from "react-redux";
+import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-
- function ParameterType() {
-  const parentRef = useRef(null);
-
-  const router=useRouter();
-
-    const parameterData = useSelector((state) => state.parameterType);
-
-    const headerData = useSelector((state) => state.headerData);
-
-console.log(parameterData);
-
-console.log(headerData);
-
-
+function ParameterType() {
+  const router = useRouter();
+  const parameterData = useSelector((state) => state.parameterType);
+  const headerData = useSelector((state) => state.headerData);
 
   const [user, setUser] = useState(null);
-
 
   useEffect(() => {
     const storedUser = localStorage.getItem("userID");
     setUser(storedUser);
   }, []);
-    
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["parameterType",parameterData?.parameterTypeId,headerData?.region,user],
-     queryFn: () =>
-    getParameterTypeData(
-      headerData?.region??"0",
-      user,
+
+  const { data, isLoading } = useQuery({
+    queryKey: [
+      "parameterType",
       parameterData?.parameterTypeId,
-    ),
-  enabled: !!parameterData && !!headerData && !!user,
-    // staleTime: 1000 * 60 * 5, // optional cache time (5 mins)
+      headerData?.region,
+      user,
+    ],
+    queryFn: () =>
+      getParameterTypeData(
+        headerData?.region ?? "0",
+        user,
+        parameterData?.parameterTypeId
+      ),
+    enabled: !!parameterData && !!headerData && !!user,
   });
 
+  if (isLoading) return <div className="text-center p-4">Loading...</div>;
 
-    const rowVirtualizer = useVirtualizer({
-    count: data?.length ?? 0,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 50, // height of one row
-    overscan: 5, // render a few extra rows for smooth scrolling
-  });
-    
   return (
-  <>
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-950 p-6 space-y-8 transition-colors duration-300">
-<div className='m-0 flex font-semibold cursor-pointer' onClick={()=>router.back()}><ArrowLeft/> <span>Go back to Grouped data</span></div>
-   <div className="pt-5 space-y-8">
-        <Card className="bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm border dark:border-gray-700 p-0">
-          <CardContent className="p-4">
-            <h3 className="text-sm font-semibold text-gray-800 dark:text-white mb-4">
-              Branchwise Summary by {parameterData?.parameterName}
-            </h3>
+      <div
+        className="m-0 flex items-center gap-2 font-semibold cursor-pointer text-gray-800 dark:text-gray-100"
+        onClick={() => router.back()}
+      >
+        <ArrowLeft size={18} /> <span>Go back to Grouped data</span>
+      </div>
 
-       <div className="w-full bg-gray-900 text-white rounded-md shadow-lg">
-  {/* Header */}
-  <div className="grid grid-cols-6 px-2 py-3 border-b border-gray-700 sticky top-0 bg-gray-900 z-20 font-semibold">
-    <div className="text-left">Parameters</div>
-    <div className="text-right">Yesterday</div>
-    <div className="text-right">7 days</div>
-    <div className="text-right">30 days</div>
-    <div className="text-right">90 days</div>
-    <div className="text-right">365 days</div>
-  </div>
+      <Card className="bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm border dark:border-gray-700">
+        <CardContent className="p-4">
+          <h3 className="text-sm font-semibold text-gray-800 dark:text-white mb-4">
+            Branchwise Summary by {parameterData?.parameterName}
+          </h3>
 
-  {/* Virtualized scroll container */}
-  <div
-    ref={parentRef}
-    className="h-[70vh] overflow-auto relative"
-  >
-    <div
-      style={{
-        height: `${rowVirtualizer.getTotalSize()}px`,
-        position: "relative",
-      }}
-    >
-      {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-        const parameters = data?.[virtualRow.index];
-        return (
-          <div
-            key={virtualRow.index}
-            className="grid grid-cols-6 px-2 py-2 border-b border-gray-700 hover:bg-gray-800 cursor-pointer"
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              transform: `translateY(${virtualRow.start}px)`,
-            }}
-          >
-            <div className="font-semibold text-left">{parameters.clinicName}</div>
-            <div className="text-right">{parameters.yesterday}</div>
-            <div className="text-right">{parameters.days7}</div>
-            <div className="text-right">{parameters.days30}</div>
-            <div className="text-right">{parameters.days90}</div>
-            <div className="text-right">{parameters.days365}</div>
+          {/* ✅ Scrollable + Non-wrapping Table */}
+          <div className="overflow-x-auto rounded-lg border border-gray-700">
+            <Table className="min-w-[1100px] text-sm">
+              <TableHeader className="bg-gray-900 text-white sticky top-0 z-10">
+                <TableRow>
+                  <TableHead className="text-left font-semibold w-[220px] whitespace-nowrap">
+                    Parameters
+                  </TableHead>
+                  <TableHead className="text-center whitespace-nowrap w-[80px]">
+                    D1
+                  </TableHead>
+                  <TableHead className="text-center whitespace-nowrap w-[80px]">
+                    D2
+                  </TableHead>
+                  <TableHead className="text-center whitespace-nowrap w-[80px]">
+                    W1
+                  </TableHead>
+                  <TableHead className="text-center whitespace-nowrap w-[80px]">
+                    W2
+                  </TableHead>
+                  <TableHead className="text-center whitespace-nowrap w-[80px]">
+                    M1
+                  </TableHead>
+                  <TableHead className="text-center whitespace-nowrap w-[80px]">
+                    M2
+                  </TableHead>
+                  <TableHead className="text-center whitespace-nowrap w-[80px]">
+                    Q1
+                  </TableHead>
+                  <TableHead className="text-center whitespace-nowrap w-[80px]">
+                    Q2
+                  </TableHead>
+                  <TableHead className="text-center whitespace-nowrap w-[80px]">
+                    W1/W2
+                  </TableHead>
+                  <TableHead className="text-center whitespace-nowrap w-[80px]">
+                    M1/M2
+                  </TableHead>
+                  <TableHead className="text-center whitespace-nowrap w-[80px]">
+                    Q1/Q2
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+
+              <TableBody>
+                {data?.map((row, index) => (
+                  <TableRow
+                    key={index}
+                    className="hover:bg-gray-800/50 border-b border-gray-700 text-gray-100"
+                  >
+                    <TableCell className="text-left font-semibold whitespace-nowrap">
+                      {row.clinicName}
+                    </TableCell>
+                    <TableCell className="text-center">{row.d1}</TableCell>
+                    <TableCell className="text-center">{row.d2}</TableCell>
+                    <TableCell className="text-center">{row.w1}</TableCell>
+                    <TableCell className="text-center">{row.w2}</TableCell>
+                    <TableCell className="text-center">{row.m1}</TableCell>
+                    <TableCell className="text-center">{row.m2}</TableCell>
+                    <TableCell className="text-center">{row.q1}</TableCell>
+                    <TableCell className="text-center">{row.q2}</TableCell>
+                    <TableCell className="text-center">{row.w1w2}</TableCell>
+                    <TableCell className="text-center">{row.m1m2}</TableCell>
+                    <TableCell className="text-center">{row.q1q2}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
-        );
-      })}
+        </CardContent>
+      </Card>
     </div>
-  </div>
-</div>
-
-
-          </CardContent>
-        </Card>
-        </div>
-        </div>
-  </>
-  )
+  );
 }
 
-export default ParameterType
+export default ParameterType;
