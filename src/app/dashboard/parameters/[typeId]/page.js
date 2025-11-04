@@ -5,7 +5,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -15,12 +14,12 @@ import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useVirtualizer } from "@tanstack/react-virtual";
 
 function ParameterType() {
   const router = useRouter();
   const parameterData = useSelector((state) => state.parameterType);
   const headerData = useSelector((state) => state.headerData);
-
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -28,7 +27,7 @@ function ParameterType() {
     setUser(storedUser);
   }, []);
 
-  const { data, isLoading } = useQuery({
+  const { data = [], isLoading } = useQuery({
     queryKey: [
       "parameterType",
       parameterData?.parameterTypeId,
@@ -44,7 +43,19 @@ function ParameterType() {
     enabled: !!parameterData && !!headerData && !!user,
   });
 
+  const parentRef = useRef(null);
+  const rowVirtualizer = useVirtualizer({
+    count: data.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 42, // row height
+    overscan: 8,
+  });
+
   if (isLoading) return <div className="text-center p-4">Loading...</div>;
+
+  // Define consistent column widths (match header & rows)
+  const gridTemplate =
+    "220px repeat(11, 80px)"; // 12 columns (1 param + 11 values)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-950 p-6 space-y-8 transition-colors duration-300">
@@ -61,74 +72,67 @@ function ParameterType() {
             Branchwise Summary by {parameterData?.parameterName}
           </h3>
 
-          {/* ✅ Scrollable + Non-wrapping Table */}
-          <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
-            <Table className="min-w-[1100px] text-sm">
-              <TableHeader className="bg-gray-900 text-white sticky top-0 z-10">
-                <TableRow>
-                  <TableHead className="text-left font-semibold w-[220px] whitespace-nowrap">
-                    Parameters
-                  </TableHead>
-                  <TableHead className="text-center whitespace-nowrap w-[80px]">
-                    D1
-                  </TableHead>
-                  <TableHead className="text-center whitespace-nowrap w-[80px]">
-                    D2
-                  </TableHead>
-                  <TableHead className="text-center whitespace-nowrap w-[80px]">
-                    W1
-                  </TableHead>
-                  <TableHead className="text-center whitespace-nowrap w-[80px]">
-                    W2
-                  </TableHead>
-                  <TableHead className="text-center whitespace-nowrap w-[80px]">
-                    M1
-                  </TableHead>
-                  <TableHead className="text-center whitespace-nowrap w-[80px]">
-                    M2
-                  </TableHead>
-                  <TableHead className="text-center whitespace-nowrap w-[80px]">
-                    Q1
-                  </TableHead>
-                  <TableHead className="text-center whitespace-nowrap w-[80px]">
-                    Q2
-                  </TableHead>
-                  <TableHead className="text-center whitespace-nowrap w-[80px]">
-                    W1/W2
-                  </TableHead>
-                  <TableHead className="text-center whitespace-nowrap w-[80px]">
-                    M1/M2
-                  </TableHead>
-                  <TableHead className="text-center whitespace-nowrap w-[80px]">
-                    Q1/Q2
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
+          <div
+            ref={parentRef}
+            className="w-full overflow-auto rounded-lg border border-gray-700"
+            style={{ height: "70vh" }}
+          >
+            {/* ✅ Fixed header row */}
+            <div
+              className="sticky top-0 z-10 bg-gray-900 text-white font-semibold grid"
+              style={{
+                display: "grid",
+                gridTemplateColumns: gridTemplate,
+              }}
+            >
+              <div className="px-3 py-2 border-r border-gray-700"></div>
+              {["D1","D2","W1","W2","M1","M2","Q1","Q2","W1/W2","M1/M2","Q1/Q2"].map((h) => (
+                <div
+                  key={h}
+                  className="px-3 py-2 text-center border-r border-gray-700"
+                >
+                  {h}
+                </div>
+              ))}
+            </div>
 
-              <TableBody>
-                {data?.map((row, index) => (
-                  <TableRow
-                    key={index}
-                    className="hover:bg-gray-800/50 border-b border-gray-700 text-gray-100"
+            {/* ✅ Virtualized body */}
+            <div
+              style={{
+                height: `${rowVirtualizer.getTotalSize()}px`,
+                position: "relative",
+              }}
+            >
+              {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                const row = data[virtualRow.index];
+                return (
+                  <div
+                    key={virtualRow.key}
+                    ref={rowVirtualizer.measureElement}
+                    className="grid border-b border-gray-700 hover:bg-gray-800/50 text-gray-100 text-sm absolute w-full"
+                    style={{
+                      gridTemplateColumns: gridTemplate,
+                      transform: `translateY(${virtualRow.start}px)`,
+                    }}
                   >
-                    <TableCell className="text-left font-semibold whitespace-nowrap">
+                    <div className="px-3 py-2 font-semibold border-r border-gray-700 truncate">
                       {row.clinicName}
-                    </TableCell>
-                    <TableCell className="text-center">{row.d1}</TableCell>
-                    <TableCell className="text-center">{row.d2}</TableCell>
-                    <TableCell className="text-center">{row.w1}</TableCell>
-                    <TableCell className="text-center">{row.w2}</TableCell>
-                    <TableCell className="text-center">{row.m1}</TableCell>
-                    <TableCell className="text-center">{row.m2}</TableCell>
-                    <TableCell className="text-center">{row.q1}</TableCell>
-                    <TableCell className="text-center">{row.q2}</TableCell>
-                    <TableCell className="text-center">{row.w1w2}</TableCell>
-                    <TableCell className="text-center">{row.m1m2}</TableCell>
-                    <TableCell className="text-center">{row.q1q2}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                    </div>
+                    <div className="text-center px-2 py-2 border-r border-gray-700">{row.d1}</div>
+                    <div className="text-center px-2 py-2 border-r border-gray-700">{row.d2}</div>
+                    <div className="text-center px-2 py-2 border-r border-gray-700">{row.w1}</div>
+                    <div className="text-center px-2 py-2 border-r border-gray-700">{row.w2}</div>
+                    <div className="text-center px-2 py-2 border-r border-gray-700">{row.m1}</div>
+                    <div className="text-center px-2 py-2 border-r border-gray-700">{row.m2}</div>
+                    <div className="text-center px-2 py-2 border-r border-gray-700">{row.q1}</div>
+                    <div className="text-center px-2 py-2 border-r border-gray-700">{row.q2}</div>
+                    <div className="text-center px-2 py-2 border-r border-gray-700">{row.w1w2}</div>
+                    <div className="text-center px-2 py-2 border-r border-gray-700">{row.m1m2}</div>
+                    <div className="text-center px-2 py-2">{row.q1q2}</div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </CardContent>
       </Card>

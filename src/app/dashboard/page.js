@@ -533,7 +533,7 @@ console.log(formatted);
       <Table className="min-w-[1200px] border">
         <TableHeader>
           <TableRow className="bg-gray-200 dark:bg-gray-700">
-            <TableHead className="border">Parameters</TableHead>
+            <TableHead className="border"></TableHead>
             <TableHead className="text-right border">D1</TableHead>
             <TableHead className="text-right border">D2</TableHead>
             <TableHead className="text-right border">W1</TableHead>
@@ -555,24 +555,24 @@ console.log(formatted);
                 onClick={() => {
                   router.push(`/dashboard/parameters/${grouped.type}`);
                   dispatch(setParameterType({
-                    parameterName: grouped.parameters,
+                    parameterName: grouped.rpl,
                     parameterTypeId: grouped.type
                   }));
                 }}
               >
                 {grouped.rpl}
               </TableCell>
-              <TableCell className="text-right border">{grouped.d1.toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{grouped.d2.toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{grouped.w1.toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{grouped.w2.toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{grouped.m1.toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{grouped.m2.toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{grouped.q1.toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{grouped.q2.toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{grouped.w1W2.toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{grouped.m1M2.toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{grouped.q1Q2.toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{Number(grouped.d1).toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{Number(grouped.d2).toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{Number(grouped.w1).toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{Number(grouped.w2).toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{Number(grouped.m1).toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{Number(grouped.m2).toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{Number(grouped.q1).toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{Number(grouped.q2).toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{Number(grouped.w1W2).toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{Number(grouped.m1M2).toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{Number(grouped.q1Q2).toLocaleString("en-In")}</TableCell>
             </TableRow>
           ))}
         </TableBody>
