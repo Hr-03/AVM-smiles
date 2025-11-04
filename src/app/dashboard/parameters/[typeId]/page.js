@@ -62,7 +62,7 @@ function ParameterType() {
           </h3>
 
           {/* ✅ Scrollable + Non-wrapping Table */}
-          <div className="overflow-x-auto rounded-lg border border-gray-700">
+          <div className="w-full overflow-x-auto rounded-lg border border-gray-700">
             <Table className="min-w-[1100px] text-sm">
               <TableHeader className="bg-gray-900 text-white sticky top-0 z-10">
                 <TableRow>

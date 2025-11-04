@@ -462,7 +462,7 @@ console.log(formatted);
       </section>
 
       {/* Branch Summary */}
-      <Card className="bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm border dark:border-gray-700 p-0">
+      <Card className="bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm border dark:border-gray-700 p-0 w-full">
         <CardContent className="p-6">
           <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
             Branch Summary
@@ -485,7 +485,7 @@ console.log(formatted);
               <tr><td>South</td><td>24</td><td>16</td><td>₹0.2L</td><td>₹0.2L</td><td>₹0.1L</td></tr>
             </tbody>
           </table> */}
-           <Table>
+           <Table className="overflow-x-auto">
       {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
       <TableHeader>
         <TableRow>
@@ -522,51 +522,65 @@ console.log(formatted);
       </Card>
       </div>:
       <div className="pt-5 space-y-8">
-      <Card className="bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm border dark:border-gray-700 p-0">
-        <CardContent className="p-4">
-          <h3 className="text-sm font-semibold text-gray-800 dark:text-white mb-4">
-            Overall Summary
-          </h3>
-           <Table className="border-1">
-      <TableHeader>
-        <TableRow className="bg-gray-200 dark:bg-gray-700">
-          <TableHead className="w-[100px] border">Parameters</TableHead>
-          <TableHead className="text-right border">Yesterday</TableHead>
-          <TableHead className="text-right border">7 days</TableHead>
-          <TableHead className="text-right border">30 days</TableHead>
-          <TableHead className="text-right border">90 days</TableHead>
-          <TableHead className="text-right border">365 days</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {data?.map((grouped,index) => (
-          <TableRow key={index} className="bg-blue-500/10 hover:bg-blue-500/20 border-t-black/5">
-            <TableCell className="font-medium border underline hover:text-blue-400 hover:cursor-pointer" onClick={()=>{
-              router.push(`/dashboard/parameters/${grouped.type}`)
-             dispatch(setParameterType({
-                parameterName:grouped.parameters,
-                parameterTypeId:grouped.type
-              }))
-            }}>{grouped.parameters}</TableCell>     
-            <TableCell className="text-right border">{Math.round(grouped.yesterday).toLocaleString("en-In")}</TableCell>
-            <TableCell className="text-right border">{Math.round(grouped.days7).toLocaleString("en-In")}</TableCell>
-            <TableCell className="text-right border">{Math.round(grouped.days30).toLocaleString("en-In")}</TableCell>
-            <TableCell className="text-right border">{Math.round(grouped.days90).toLocaleString("en-In")}</TableCell>
-            <TableCell className="text-right border">{Math.round(grouped.days365).toLocaleString("en-In")}</TableCell>
+    <Card className="bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm border dark:border-gray-700 p-0">
+  <CardContent className="p-4">
+    <h3 className="text-sm font-semibold text-gray-800 dark:text-white mb-4">
+      Overall Summary
+    </h3>
+
+    {/* ✅ Scrollable wrapper */}
+    <div className="w-full overflow-x-auto">
+      <Table className="min-w-[1200px] border">
+        <TableHeader>
+          <TableRow className="bg-gray-200 dark:bg-gray-700">
+            <TableHead className="border">Parameters</TableHead>
+            <TableHead className="text-right border">D1</TableHead>
+            <TableHead className="text-right border">D2</TableHead>
+            <TableHead className="text-right border">W1</TableHead>
+            <TableHead className="text-right border">W2</TableHead>
+            <TableHead className="text-right border">M1</TableHead>
+            <TableHead className="text-right border">M2</TableHead>
+            <TableHead className="text-right border">Q1</TableHead>
+            <TableHead className="text-right border">Q2</TableHead>
+            <TableHead className="text-right border">W1/W2</TableHead>
+            <TableHead className="text-right border">M1/M2</TableHead>
+            <TableHead className="text-right border">Q1/Q2</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-      {/* <TableFooter className="bg-gray-100 dark:bg-gray-700">
-        <TableRow>
-          <TableCell colSpan={3} className="border">Total</TableCell>
-          <TableCell className="text-right border">₹</TableCell>
-          <TableCell className="text-right border">₹1.4L</TableCell>
-          <TableCell className="text-right border">₹0.75L</TableCell>
-        </TableRow>
-      </TableFooter> */}
-    </Table>
-        </CardContent>
-      </Card>
+        </TableHeader>
+        <TableBody>
+          {data?.map((grouped, index) => (
+            <TableRow key={index} className="bg-blue-500/10 hover:bg-blue-500/20 border-t-black/5">
+              <TableCell
+                className="font-medium border underline hover:text-blue-400 hover:cursor-pointer"
+                onClick={() => {
+                  router.push(`/dashboard/parameters/${grouped.type}`);
+                  dispatch(setParameterType({
+                    parameterName: grouped.parameters,
+                    parameterTypeId: grouped.type
+                  }));
+                }}
+              >
+                {grouped.rpl}
+              </TableCell>
+              <TableCell className="text-right border">{grouped.d1.toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{grouped.d2.toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{grouped.w1.toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{grouped.w2.toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{grouped.m1.toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{grouped.m2.toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{grouped.q1.toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{grouped.q2.toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{grouped.w1W2.toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{grouped.m1M2.toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{grouped.q1Q2.toLocaleString("en-In")}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  </CardContent>
+</Card>
+
       </div>
       }
 
