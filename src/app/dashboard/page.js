@@ -56,6 +56,15 @@ import { useDispatch } from "react-redux";
 import { setHeaderData } from "@/store/slices/headerSlice";
 import { getDashboardCountData } from "@/api/dashboardCount";
 import { useQuery } from "@tanstack/react-query";
+import {
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+  getSortedRowModel 
+} from "@tanstack/react-table";
+import { ArrowUpDown } from "lucide-react";
+import GenericTable from "@/components/common/GenericTable";
+
 
 export default function DashboardPage() {
   const [region, setRegion] = useState("0");
@@ -256,11 +265,39 @@ console.log(formatted);
   ];
 
 
-    const totalRevenue = revenueBreakupData.reduce((sum, item) => sum + item.value, 0);
+    // const totalRevenue = revenueBreakupData.reduce((sum, item) => sum + item.value, 0);
 
-
-    
-
+  const columns = [
+    {
+      accessorKey: "rpl",
+      header: "",
+      cell: ({ row }) => (
+        <span
+          onClick={() => {
+            router.push(`/dashboard/parameters/${row.original.type}`);
+            dispatch(
+              setParameterType({
+                parameterName: row.original.rpl,
+                parameterTypeId: row.original.type,
+              })
+            );
+          }}
+          className="underline text-blue-600 dark:text-blue-400 hover:text-blue-500 hover:cursor-pointer"
+        >
+          {row.original.rpl}
+        </span>
+      ),
+    },
+    ...["d1", "w1", "m1", "q1", "y1"].map((key) => ({
+      accessorKey: key,
+      header: key.toUpperCase(),
+      cell: ({ getValue }) => {
+        const val = getValue();
+        return val ? Number(val).toLocaleString("en-IN") : "-";
+      },
+       sortingFn: "alphanumeric", 
+    })),
+  ];
 
   if (isLoading) return <p>Loading dashboard...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -521,73 +558,19 @@ console.log(formatted);
         </CardContent>
       </Card>
       </div>:
-      <div className="pt-5 space-y-8">
-    <Card className="bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm border dark:border-gray-700 p-0">
-  <CardContent className="p-4">
-    <h3 className="text-sm font-semibold text-gray-800 dark:text-white mb-4">
-      Overall Summary
-    </h3>
+   <div className="pt-5 space-y-8">
+          <Card className="bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm border dark:border-gray-700 p-0">
+            <CardContent className="p-4">
+              <h3 className="text-sm font-semibold text-gray-800 dark:text-white mb-4">
+                Overall Summary
+              </h3>
 
-    {/* ✅ Scrollable wrapper */}
-    <div className="w-full overflow-x-auto">
-      <Table className="min-w-[1200px] border">
-        <TableHeader>
-          <TableRow className="bg-gray-200 dark:bg-gray-700">
-            <TableHead className="border"></TableHead>
-            <TableHead className="text-right border">D1</TableHead>
-            <TableHead className="text-right border">D2</TableHead>
-            <TableHead className="text-right border">W1</TableHead>
-            <TableHead className="text-right border">W2</TableHead>
-            <TableHead className="text-right border">M1</TableHead>
-            <TableHead className="text-right border">M2</TableHead>
-            <TableHead className="text-right border">Q1</TableHead>
-            <TableHead className="text-right border">Q2</TableHead>
-            <TableHead className="text-right border">Y1</TableHead>
-            <TableHead className="text-right border">Y2</TableHead>
-            <TableHead className="text-right border">W1/W2</TableHead>
-            <TableHead className="text-right border">M1/M2</TableHead>
-            <TableHead className="text-right border">Q1/Q2</TableHead>
-            <TableHead className="text-right border">Y1/Y2</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {data?.map((grouped, index) => (
-            <TableRow key={index} className="bg-blue-500/10 hover:bg-blue-500/20 border-t-black/5">
-              <TableCell
-                className="font-medium border underline hover:text-blue-400 hover:cursor-pointer"
-                onClick={() => {
-                  router.push(`/dashboard/parameters/${grouped.type}`);
-                  dispatch(setParameterType({
-                    parameterName: grouped.rpl,
-                    parameterTypeId: grouped.type
-                  }));
-                }}
-              >
-                {grouped.rpl}
-              </TableCell>
-              <TableCell className="text-right border">{Number(grouped.d1).toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{Number(grouped.d2).toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{Number(grouped.w1).toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{Number(grouped.w2).toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{Number(grouped.m1).toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{Number(grouped.m2).toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{Number(grouped.q1).toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{Number(grouped.q2).toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{Number(grouped.y1).toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{Number(grouped.y2).toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{Number(grouped.w1W2).toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{Number(grouped.m1M2).toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{Number(grouped.q1Q2).toLocaleString("en-In")}</TableCell>
-              <TableCell className="text-right border">{Number(grouped.y1Y2).toLocaleString("en-In")}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
-  </CardContent>
-</Card>
+             <GenericTable data={period === "All" ? data || [] : []} columns={columns} />
 
-      </div>
+            </CardContent>
+          </Card>
+        </div>
+
       }
 
     </div>
