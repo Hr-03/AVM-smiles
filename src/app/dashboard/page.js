@@ -542,9 +542,12 @@ console.log(formatted);
             <TableHead className="text-right border">M2</TableHead>
             <TableHead className="text-right border">Q1</TableHead>
             <TableHead className="text-right border">Q2</TableHead>
+            <TableHead className="text-right border">Y1</TableHead>
+            <TableHead className="text-right border">Y2</TableHead>
             <TableHead className="text-right border">W1/W2</TableHead>
             <TableHead className="text-right border">M1/M2</TableHead>
             <TableHead className="text-right border">Q1/Q2</TableHead>
+            <TableHead className="text-right border">Y1/Y2</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -570,9 +573,12 @@ console.log(formatted);
               <TableCell className="text-right border">{Number(grouped.m2).toLocaleString("en-In")}</TableCell>
               <TableCell className="text-right border">{Number(grouped.q1).toLocaleString("en-In")}</TableCell>
               <TableCell className="text-right border">{Number(grouped.q2).toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{Number(grouped.y1).toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{Number(grouped.y2).toLocaleString("en-In")}</TableCell>
               <TableCell className="text-right border">{Number(grouped.w1W2).toLocaleString("en-In")}</TableCell>
               <TableCell className="text-right border">{Number(grouped.m1M2).toLocaleString("en-In")}</TableCell>
               <TableCell className="text-right border">{Number(grouped.q1Q2).toLocaleString("en-In")}</TableCell>
+              <TableCell className="text-right border">{Number(grouped.y1Y2).toLocaleString("en-In")}</TableCell>
             </TableRow>
           ))}
         </TableBody>
