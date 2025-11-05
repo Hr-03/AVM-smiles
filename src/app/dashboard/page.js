@@ -265,7 +265,7 @@ console.log(formatted);
   ];
 
 
-    // const totalRevenue = revenueBreakupData.reduce((sum, item) => sum + item.value, 0);
+    const totalRevenue = revenueBreakupData.reduce((sum, item) => sum + item.value, 0);
 
   const columns = [
     {

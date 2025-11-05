@@ -13,13 +13,18 @@ function ParameterType() {
   const router = useRouter();
   const parameterData = useSelector((state) => state.parameterType);
   const headerData = useSelector((state) => state.headerData);
-  const [user, setUser] = useState(null);
 
+  const [user, setUser] = useState(null);
+  const [mounted, setMounted] = useState(false);
+
+  // ✅ Handle client-only data safely
   useEffect(() => {
+    setMounted(true);
     const storedUser = localStorage.getItem("userID");
     setUser(storedUser);
   }, []);
 
+  // Only fetch when user + other dependencies are ready
   const { data = [], isLoading } = useQuery({
     queryKey: [
       "parameterType",
@@ -33,9 +38,10 @@ function ParameterType() {
         user,
         parameterData?.parameterTypeId
       ),
-    enabled: !!parameterData && !!headerData && !!user,
+    enabled: mounted && !!parameterData && !!headerData && !!user,
   });
 
+  // Define table columns once
   const columns = useMemo(
     () => [
       {
@@ -75,7 +81,10 @@ function ParameterType() {
     []
   );
 
-  if (isLoading) return <div className="text-center p-4">Loading...</div>;
+  // ✅ Render safely — only after mount
+  if (!mounted || isLoading) {
+    return <div className="text-center p-4">Loading...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-950 p-6 space-y-8 transition-colors duration-300">
