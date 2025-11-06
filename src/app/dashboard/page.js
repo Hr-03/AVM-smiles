@@ -64,6 +64,7 @@ import {
 } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import GenericTable from "@/components/common/GenericTable";
+import { Spinner } from "@/components/ui/spinner";
 
 
 export default function DashboardPage() {
@@ -301,8 +302,9 @@ header: key.includes("W2") || key.includes("M2") || key.includes("Q2") || key.in
     })),
   ];
 
-  if (isLoading) return <p>Loading dashboard...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (isLoading || dashLoading) return <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center' }}>
+<Spinner/></div>;
+  if (error || dashError) return <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center' }}>Error: {error.message}</div>;
 
 
   return (
@@ -388,7 +390,7 @@ header: key.includes("W2") || key.includes("M2") || key.includes("Q2") || key.in
               <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
                 {item.title}
               </p>
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white"> {item.key.includes("revenue") ? `₹ ${Number(value).toLocaleString("en-IN")}` : value}
+              <h2 className="text-l whitespace-nowrap font-bold text-gray-900 dark:text-white"> {item.key.includes("revenue") ? `₹ ${Number(value).toLocaleString("en-IN")}` : value}
 </h2>
             </CardContent>
           </Card>
@@ -447,7 +449,7 @@ header: key.includes("W2") || key.includes("M2") || key.includes("Q2") || key.in
                     ))}
                   </Pie>
                   <Legend />
-                  <Tooltip />
+                  <Tooltip formatter={(value) => `₹`+value.toLocaleString("en-IN")}/>
                 </PieChart>
               </ResponsiveContainer>
             </div>

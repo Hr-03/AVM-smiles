@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import GenericTable from "@/components/common/GenericTable";
+import { Spinner } from "@/components/ui/spinner";
 
 function ParameterType() {
   const router = useRouter();
@@ -85,7 +86,8 @@ function ParameterType() {
 
   // ✅ Render safely — only after mount
   if (!mounted || isLoading) {
-    return <div className="text-center p-4">Loading...</div>;
+    return     <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center' }}>
+<Spinner/></div>;
   }
 
   return (
