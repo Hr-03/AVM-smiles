@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 
-export default function GenericTable({ columns, data }) {
+export default function GenericTable({ columns, data,showSorting=true }) {
   const [sorting, setSorting] = React.useState([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
 
@@ -51,8 +51,8 @@ export default function GenericTable({ columns, data }) {
       </div> */}
 
       {/* 🧭 Table */}
-      <div className="overflow-auto border rounded-lg max-h-[70vh]">
-        <Table>
+      <div className="overflow-auto overflow-y-hidden border rounded-lg max-h-[70vh] border-gray-300 dark:border-gray-700">
+        <Table className="border border-gray-300 dark:border-gray-700">
           {/* ===================== TABLE HEADER ===================== */}
 <TableHeader>
   {table.getHeaderGroups().map((headerGroup) => (
@@ -60,14 +60,14 @@ export default function GenericTable({ columns, data }) {
       {headerGroup.headers.map((header) => {
         const column = header.column;
         const isSorted = column.getIsSorted(); // 'asc' | 'desc' | false
-        const isRplColumn = column.id === "rpl";
+        const isRplColumn = column.id === "rpl" || column.id === "clinicName";
 
         return (
           <TableHead
             key={header.id}
-            className={isRplColumn ? "text-left" : "text-right"}
+            className={`${isRplColumn ? "text-left" : "text-right"} border border-gray-300 dark:border-gray-700`}
           >
-            {header.isPlaceholder ? null : column.getCanSort() ? (
+            {header.isPlaceholder ? null : column.getCanSort() && showSorting ? (
               <Button
                 variant="ghost"
                 className={`flex items-center gap-2 w-full ${
@@ -109,11 +109,11 @@ export default function GenericTable({ columns, data }) {
     table.getRowModel().rows.map((row) => (
       <TableRow key={row.id}>
         {row.getVisibleCells().map((cell) => {
-          const isRplColumn = cell.column.id === "rpl";
+          const isRplColumn = cell.column.id === "rpl" || cell.column.id === "clinicName";
           return (
             <TableCell
               key={cell.id}
-              className={isRplColumn ? "text-left" : "text-right"}
+              className={`${isRplColumn ? "text-left" : "text-right"} border border-gray-300 dark:border-gray-700`}
             >
               {flexRender(cell.column.columnDef.cell, cell.getContext())}
             </TableCell>

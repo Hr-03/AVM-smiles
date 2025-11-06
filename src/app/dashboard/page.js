@@ -288,9 +288,11 @@ console.log(formatted);
         </span>
       ),
     },
-    ...["d1", "w1", "m1", "q1", "y1"].map((key) => ({
+    ...["d1","d2", "w1","w2", "m1","m2", "q1","q2", "y1","y2","w1W2","m1M2","q1Q2","y1Y2"].map((key) => ({
       accessorKey: key,
-      header: key.toUpperCase(),
+header: key.includes("W2") || key.includes("M2") || key.includes("Q2") || key.includes("Y2")
+    ? key.replace(/(\d)([a-zA-Z])/g, '$1/$2').toUpperCase()  // Fix the format: insert slash between number and letter
+    : key.toUpperCase(),  // Other key
       cell: ({ getValue }) => {
         const val = getValue();
         return val ? Number(val).toLocaleString("en-IN") : "-";
@@ -565,7 +567,7 @@ console.log(formatted);
                 Overall Summary
               </h3>
 
-             <GenericTable data={period === "All" ? data || [] : []} columns={columns} />
+             <GenericTable data={period === "All" ? data || [] : []} columns={columns}  showSorting={false}/>
 
             </CardContent>
           </Card>

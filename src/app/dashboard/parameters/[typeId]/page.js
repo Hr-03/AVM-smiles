@@ -45,10 +45,10 @@ function ParameterType() {
   const columns = useMemo(
     () => [
       {
-        header: "Clinic Name",
+        header: "",
         accessorKey: "clinicName",
         cell: (info) => (
-          <div className="text-left font-semibold text-gray-900 dark:text-gray-100">
+          <div className="font-semibold text-gray-900 dark:text-gray-100">
             {info.getValue()}
           </div>
         ),
@@ -69,10 +69,12 @@ function ParameterType() {
         "q1Q2",
         "y1Y2",
       ].map((key) => ({
-        header: key.toUpperCase(),
+        header: key.includes("W2") || key.includes("M2") || key.includes("Q2") || key.includes("Y2")
+    ? key.replace(/(\d)([a-zA-Z])/g, '$1/$2').toUpperCase()  // Fix the format: insert slash between number and letter
+    : key.toUpperCase(),  // Other key
         accessorKey: key,
         cell: (info) => (
-          <div className="text-center text-gray-900 dark:text-gray-100">
+          <div className="text-gray-900 dark:text-gray-100">
             {info.getValue()}
           </div>
         ),
@@ -103,7 +105,6 @@ function ParameterType() {
             Branchwise Summary by {parameterData?.parameterName}
           </h3>
 
-          {/* ✅ Generic Table */}
           <GenericTable columns={columns} data={data} />
         </CardContent>
       </Card>

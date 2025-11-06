@@ -30,7 +30,7 @@ export default function Sidebar({ open }) {
     >
       {/* Logo */}
       <div className="flex items-center justify-center h-16 border-b border-border">
-        <span className="text-xl font-bold">{open ? <Image src="/AVM logo.png" width={80} height={80}/> : "AVM"}</span>
+        <span className="text-xl font-bold">{open ? <Image src="/AVM logo.png" width={80} height={80} alt="logo"/> : "AVM"}</span>
       </div>
 
       <nav className="mt-6 space-y-1">
