@@ -12,13 +12,14 @@ import { useLogin } from "@/api/auth";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "@/store/slices/authSlice";
 import Image from "next/image";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
     const [form, setForm] = useState({ 
       UserId: "",
        UserPassword: "" });
-  const { mutate: login, isPending } = useLogin();
+  const { mutate: login, isPending, } = useLogin();
   const dispatch = useDispatch();
 
   const router = useRouter(); 
@@ -30,8 +31,8 @@ export default function LoginPage() {
       e.preventDefault();
         login(form, {
           onSuccess: (res) => {
-            dispatch(setCredentials({ token: res.token, user: res.userId }));
-            router.push("/dashboard");
+            dispatch(setCredentials({ token: res.token, user: res.userId , userData:res }));
+            router.push("/dashboard/admin");
           },
           onError: (err) => alert(err.response?.data?.message || "Login failed"),
         }); 
@@ -93,8 +94,8 @@ export default function LoginPage() {
           </div>
 
           {/* Login Button */}
-          <Button className="w-full bg-indigo-600 hover:bg-indigo-700 hover:cursor-pointer hover:text-white" onClick={handleSignIn}>
-            Sign In
+          <Button className="w-full bg-indigo-600 hover:bg-indigo-700 hover:cursor-pointer hover:text-white" onClick={handleSignIn} disabled={isPending}>
+            {isPending?<Spinner/>:"Sign In"}
           </Button>
         </CardContent>
       </Card>

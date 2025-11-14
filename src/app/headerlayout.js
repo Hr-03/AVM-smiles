@@ -29,7 +29,7 @@ export default function HeaderLayout({ onToggle, sidebarOpen }) {
           <Menu size={22} className="cursor-pointer"/>
         </button>
       </div>
-        <h1 className="text-lg font-semibold">Dashboard</h1>
+        {/* <h1 className="text-lg font-semibold">Dashboard</h1> */}
 
       {/* Right Section: User + Logout */}
       <div className="flex items-center gap-3">

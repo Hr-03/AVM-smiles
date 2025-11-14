@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState ={
     token:null,
-    user:null
+    user:null,
+    userData:null,
     
 }
 
@@ -14,16 +15,20 @@ const authSlice = createSlice({
         setCredentials:(state,action)=>{
             state.token=action.payload.token;
             state.user=action.payload.user;
-            console.log(action.payload);
+            state.userData=action.payload;
+            console.log(action);
             
             localStorage.setItem("token",action.payload.token);
             localStorage.setItem("userID",action.payload.user);
+            localStorage.setItem("user",JSON.stringify(action.payload));
         },
         Logout:(state)=>{
             state.token=null;
             state.user=null;
+            state.userData=null;
             localStorage.removeItem("token");
             localStorage.removeItem("userID");
+            localStorage.removeItem("user");
         }
     }
 });

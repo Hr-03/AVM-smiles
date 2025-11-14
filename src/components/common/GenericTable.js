@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 
-export default function GenericTable({ columns, data,showSorting=true }) {
+export default function GenericTable({ columns, data,showSorting=true,showPagination=true }) {
   const [sorting, setSorting] = React.useState([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
 
@@ -134,7 +134,7 @@ export default function GenericTable({ columns, data,showSorting=true }) {
       </div>
 
       {/* ===================== PAGINATION ===================== */}
-      <div className="flex justify-between items-center gap-2">
+      {showPagination && <div className="flex justify-between items-center gap-2">
         <div>
           Page {table.getState().pagination.pageIndex + 1} of{" "}
           {table.getPageCount()}
@@ -157,7 +157,7 @@ export default function GenericTable({ columns, data,showSorting=true }) {
             Next
           </Button>
         </div>
-      </div>
+      </div>}
     </div>
   );
 }

@@ -14,7 +14,7 @@ export default function AppLayout({ children }) {
   if (isLoginPage) return children;
 
   return (
-    <div className="flex min-h-screen overflow-hidden">
+    <div className="flex min-h-screen">
       {/* Sidebar */}
       <Sidebar open={sidebarOpen} />
 

@@ -9,21 +9,29 @@ import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import GenericTable from "@/components/common/GenericTable";
 import { Spinner } from "@/components/ui/spinner";
+import { getUser } from "@/api/getUser";
 
 function ParameterType() {
   const router = useRouter();
   const parameterData = useSelector((state) => state.parameterType);
   const headerData = useSelector((state) => state.headerData);
 
-  const [user, setUser] = useState(null);
   const [mounted, setMounted] = useState(false);
 
   // ✅ Handle client-only data safely
   useEffect(() => {
     setMounted(true);
-    const storedUser = localStorage.getItem("userID");
-    setUser(storedUser);
+   
   }, []);
+
+
+    let userDetails=getUser();
+  
+    console.log(userDetails?.userData?.roleName);
+  
+    const UserID=userDetails?.userData?.userId;
+    const UserRole=userDetails?.userData?.roleName;
+
 
   // Only fetch when user + other dependencies are ready
   const { data = [], isLoading } = useQuery({
@@ -31,15 +39,15 @@ function ParameterType() {
       "parameterType",
       parameterData?.parameterTypeId,
       headerData?.region,
-      user,
+      UserID,
     ],
     queryFn: () =>
       getParameterTypeData(
         headerData?.region ?? "0",
-        user,
+        UserID,
         parameterData?.parameterTypeId
       ),
-    enabled: mounted && !!parameterData && !!headerData && !!user,
+    enabled: mounted && !!parameterData && !!headerData && !!UserID,
   });
 
   // Define table columns once

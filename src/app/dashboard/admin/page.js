@@ -65,31 +65,34 @@ import {
 import { ArrowUpDown } from "lucide-react";
 import GenericTable from "@/components/common/GenericTable";
 import { Spinner } from "@/components/ui/spinner";
+import { getUser } from "@/api/getUser";
 
 
 export default function DashboardPage() {
   const [region, setRegion] = useState("0");
   const [period, setPeriod] = useState("All");
   const router = useRouter(); // ✅ Initialize router
-  const [user, setUser] = useState(null);
+  
 
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("userID");
-    setUser(storedUser);
-  }, []);
-    const { data, isLoading, error } = useDashboardData(region, user);
+  let userDetails=getUser();
+
+
+  const UserID=userDetails?.userData?.userId;
+  const UserRole=userDetails?.userData?.roleName;
+  
+    const { data, isLoading, error } = useDashboardData(region, UserID);
 
 
     const { data:dashCountData, isLoading:dashLoading, isError, error:dashError } = useQuery({
-        queryKey: ["dashboardCount",region,user,period],
+        queryKey: ["dashboardCount",region,UserID,period],
          queryFn: () =>
         getDashboardCountData(
           region,
-          user,
+          UserID,
           period
         ),
-      enabled: !!region && !!user && !!period,
+      enabled: !!region && !!UserID && !!period,
         // staleTime: 1000 * 60 * 5, // optional cache time (5 mins)
       });
 
@@ -275,7 +278,7 @@ console.log(formatted);
       cell: ({ row }) => (
         <span
           onClick={() => {
-            router.push(`/dashboard/parameters/${row.original.type}`);
+            router.push(`/dashboard/admin/parameters/${row.original.type}`);
             dispatch(
               setParameterType({
                 parameterName: row.original.rpl,

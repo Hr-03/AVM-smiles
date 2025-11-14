@@ -5,6 +5,7 @@ import "./globals.css";
 
 import { AppProviders } from "./providers";
 import AppLayout from "./app-layout";
+import RouteTransitionLoader from "./RouteTransitionLoader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -55,6 +56,8 @@ export default function RootLayout({ children }) {
       >
            <AppProviders>
            <AppLayout>
+                    <RouteTransitionLoader />
+
         {children}
         </AppLayout>
         <ReactQueryDevtools initialIsOpen={false} />
