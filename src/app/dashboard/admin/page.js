@@ -311,7 +311,7 @@ header: key.includes("W2") || key.includes("M2") || key.includes("Q2") || key.in
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-950 p-6 space-y-8 transition-colors duration-300">
+    <div className="min-h-screen">
       {/* Header */}
  {/* Header (Fixed) */}
 <header className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-sm px-6 py-4 mb-2 flex flex-col md:flex-row md:items-center md:justify-between gap-4">

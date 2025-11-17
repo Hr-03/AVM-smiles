@@ -30,7 +30,7 @@ export default function AppLayout({ children }) {
         />
 
         {/* ✅ Main scroll fix */}
-        <main className="flex-1 mt-15 overflow-y-auto">
+        <main className="flex-1 mt-15 overflow-y-auto bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-950 p-6 space-y-8 transition-colors duration-300">
           {children}
         </main>
       </div>

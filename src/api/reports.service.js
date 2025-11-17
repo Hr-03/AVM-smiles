@@ -4,7 +4,7 @@ import axiosClient from "@/lib/axiosClient";
 export const reportsService = {
     getPatientWiseReport: async (FromDate,ToDate)=>{
         console.log('API called with:', {FromDate, ToDate});
-        const response =  await axiosClient.get(`/api/Report/GetPatientWiseReport`,{
+        const response =  await axiosClient.get(`/api/Report/GetClinicWiseReport`,{
             params:{
                 FromDate,
                 ToDate

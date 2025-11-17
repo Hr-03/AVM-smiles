@@ -68,7 +68,7 @@ function page() {
       );
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-950 p-6 space-y-8 transition-colors duration-300">
+      <div className="min-h-screen">
       {/* Back button */}
       {/* <div
         className="m-0 flex items-center gap-2 font-semibold cursor-pointer text-gray-800 dark:text-gray-100"

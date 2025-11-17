@@ -18,7 +18,7 @@ function page() {
 
 
     const {data,isLoading,isError} = useQuery({
-        queryKey: ['patientWiseReport',fromDate,toDate],
+        queryKey: ['clinicWiseReport',fromDate,toDate],
         queryFn: () => reportsService.getPatientWiseReport(fromDate,toDate),
         // enabled: !!fromDate && !!toDate,
     })
@@ -60,7 +60,7 @@ function page() {
       );
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-950 p-6 space-y-8 transition-colors duration-300">
+      <div className="min-h-screen">
       {/* Back button */}
       {/* <div
         className="m-0 flex items-center gap-2 font-semibold cursor-pointer text-gray-800 dark:text-gray-100"
@@ -73,7 +73,7 @@ function page() {
       <Card className="bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm border dark:border-gray-700">
         <CardContent className="p-6">
           <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-6">
-            Patient Wise Report
+            Clinic Wise Report
           </h3>
 
           {/* Date Range Filters */}
