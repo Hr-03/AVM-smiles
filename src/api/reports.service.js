@@ -31,4 +31,13 @@ export const reportsService = {
         })
         return response.data;
     },
+    getPatientReport: async (FromDate,ToDate)=>{
+        const response =  await axiosClient.get(`/api/Report/GetPatientsWiseReport`,{
+            params:{
+                FromDate,
+                ToDate
+            }
+        })
+        return response.data;
+    },
 }

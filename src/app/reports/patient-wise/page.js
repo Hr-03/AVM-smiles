@@ -19,9 +19,9 @@ function page() {
   const [fromDate, setfromDate] = useState("");
   const [toDate, settoDate] = useState("");
 
-  const { data, isLoading, isError, refetch, isFetching } = useQuery({
-    queryKey: ["dateWiseReport", fromDate, toDate],
-    queryFn: () => reportsService.getDateWiseReport(fromDate, toDate),
+  const { data, isLoading, isError,refetch } = useQuery({
+    queryKey: ["patientWiseReport", fromDate, toDate],
+    queryFn: () => reportsService.getPatientReport(fromDate, toDate),
     // enabled: !!fromDate && !!toDate,
   });
 
@@ -31,23 +31,20 @@ function page() {
 
   const columns = useMemo(
     () => [
-      {
-        header: "Report Date",
-        accessorKey: "reportDate",
-        cell: (info) => {
-          const date = info.getValue();
-          return <p className="text-left">{date?.split(" ")[0]}</p>;
-        },
-      },
+      // {
+      //   header: "Report Date",
+      //   accessorKey: "reportDate",
+      //   cell: (info) => {
+      //     const date = info.getValue();
+      //     return <p className='text-left'>{date?.split(" ")[0]}</p>
+      //   }
+      // },
 
       {
-        header: "No. of Leads",
-        accessorKey: "noOfLeads",
+        header: "Patient Name",
+        accessorKey: "patientName",
       },
-      {
-        header: "No. of Patients",
-        accessorKey: "noOfPatients",
-      },
+
       {
         header: "Revenue",
         accessorKey: "revenue",
@@ -78,7 +75,7 @@ function page() {
         <Card className="bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm border dark:border-gray-700 mt-0">
           <CardContent className="p-6">
             <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-6">
-              Date Wise Report
+              Patient Wise Report
             </h3>
 
             {/* Date Range Filters */}
