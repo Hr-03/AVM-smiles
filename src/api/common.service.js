@@ -9,5 +9,9 @@ export const getCommonData = {
         })
     return response.data;
     },
+    getClinics: async ()=>{
+        const response = await axiosClient.get(`/api/Clinic/GetClinic`)
+    return response.data;
+    },
 
 }

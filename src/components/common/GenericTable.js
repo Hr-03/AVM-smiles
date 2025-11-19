@@ -60,7 +60,7 @@ export default function GenericTable({ columns, data,showSorting=true,showPagina
       {headerGroup.headers.map((header) => {
         const column = header.column;
         const isSorted = column.getIsSorted(); // 'asc' | 'desc' | false
-        const isRplColumn = column.id === "rpl" || column.id === "clinicName";
+        const isRplColumn = column.id === "rpl" || column.id === "clinicName" || column.id === "parameters" || column.id === "treatmentName" || column.id === "patientName";
 
         return (
           <TableHead
@@ -109,7 +109,7 @@ export default function GenericTable({ columns, data,showSorting=true,showPagina
     table.getRowModel().rows.map((row) => (
       <TableRow key={row.id}>
         {row.getVisibleCells().map((cell) => {
-          const isRplColumn = cell.column.id === "rpl" || cell.column.id === "clinicName";
+          const isRplColumn = cell.column.id === "rpl" || cell.column.id === "clinicName" || cell.column.id === "parameters"  || cell.column.id === "treatmentName" || cell.column.id === "patientName";
           return (
             <TableCell
               key={cell.id}

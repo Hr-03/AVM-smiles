@@ -20,72 +20,84 @@ import { IndianRupee } from 'lucide-react';
 import { Users } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
+import { dashboardCount } from '@/api/dashboardCount';
+import { useClinics } from '@/hooks/useClinics';
 
 function page() {
   const router = useRouter(); // ✅ Initialize router
   const [user, setUser] = useState(null);
-
+  const [open, setOpen] = useState(false)
+  const [openClinic, setOpenClinic] = useState(false)
+  const [value, setValue] = useState("")
+  const [valueClinic, setValueClnic] = useState("")
     let userDetails=getUser();
 
 
   const UserID=userDetails?.userData?.userId;
   const UserRole=userDetails?.userData?.roleName;
-console.log(UserID);
+// console.log(UserID);
 
-  const {data:DoctorsList,isLoading,isError:DoctorListError} = useDoctorsData(UserID)
+  const {data:DoctorsList,isLoading,isError:DoctorListError} = useDoctorsData(UserRole=="1"? UserID:valueClinic)
+  
+  const {data:ClinicList,isClinicLoading,isError:ClinicListError} = useClinics()
 
 
-  console.log(DoctorsList);
+  // console.log(ClinicList);
+  
+
+
+
+  // console.log(DoctorsList);
   
 
 
 
 
 
-     const { data:dashCountData, isLoading:dashLoading, isError, error:dashError } = useQuery({
-            queryKey: ["dashboardCount",user],
+     const { data:clinicData, isLoading:clinicLoading, isError, error:clinicError } = useQuery({
+            queryKey: ["clinicDashboardCount",UserID,valueClinic,value],
              queryFn: () =>
-            getDashboardCountData(
-              region,
-              user,
-              period
+            dashboardCount.getClinicDashboardCountData(
+             UserRole=="1"? UserID:valueClinic,
+              value
             ),
-          enabled:!!user,
+          // enabled:!!user && !!value,
             // staleTime: 1000 * 60 * 5, // optional cache time (5 mins)
           });
     
     
-          let cardsData= dashCountData?.[0]?.dashboardCounts?.[0];
+          let cardsData= clinicData?.[0];
+console.log(cardsData);
 
 
      const statCards = [
         {
           title: "Patients",
-          value: "124",
+          value: Number(cardsData?.patients),
           key: "patients",
           icon: <Users className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />,
         },
         {
           title: "Procedures",
-          value: "89",
+          value: Number(cardsData?.procedures),
           key: "procedures",
           icon: <Activity className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />,
         },
         {
           title: "Revenue",
-          value: "₹ 2.8L",
+          value: Number(cardsData?.revenue),
           key: "revenue",
           icon: <IndianRupee  className="w-5 h-5 text-green-600 dark:text-green-400" />,
         },
         {
           title: "Revenue / Patient",
-          value: "₹ 2,250",
+          value: Number(cardsData?.revenuePatient),
           key: "revenuePatient",
           icon: <DivideSquare className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
         },
         {
           title: "Revenue / Procedure",
-          value: "₹ 3,150",
+          value: Number(cardsData?.revenueProcedure),
           key: "revenueProcedure",
           icon: <DivideCircle className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
         },
@@ -110,19 +122,20 @@ console.log(UserID);
 
         const columns = [
           {
-            accessorKey: "rpl",
+            accessorKey: "parameters",
             header: "",
             cell: ({ row }) => (
               <span
-              
+              className='text-left'
                 // className="underline text-blue-600 dark:text-blue-400 hover:text-blue-500 hover:cursor-pointer"
               >
-                {row.original.rpl}
+                {row.original.parameters}
               </span>
             ),
           },
           ...["d1","d2","d3"].map((key) => ({
-            accessorKey: key.toUpperCase(),
+            accessorKey: key,
+            header: key.toUpperCase(),
             cell: ({ getValue }) => {
               const val = getValue();
               return val ? Number(val).toLocaleString("en-IN") : "-";
@@ -134,19 +147,20 @@ console.log(UserID);
 
          const columnsWeeks = [
           {
-            accessorKey: "rpl",
+            accessorKey: "parameters",
             header: "",
             cell: ({ row }) => (
               <span
               
                 // className="underline text-blue-600 dark:text-blue-400 hover:text-blue-500 hover:cursor-pointer"
               >
-                {row.original.rpl}
+                {row.original.parameters}
               </span>
             ),
           },
           ...["w1","w2","w3"].map((key) => ({
-            accessorKey: key.toUpperCase(),
+            accessorKey: key,
+            header: key.toUpperCase(),
             cell: ({ getValue }) => {
               const val = getValue();
               return val ? Number(val).toLocaleString("en-IN") : "-";
@@ -158,19 +172,20 @@ console.log(UserID);
 
          const columnsMonths = [
           {
-            accessorKey: "rpl",
+            accessorKey: "parameters",
             header: "",
             cell: ({ row }) => (
               <span
               
                 // className="underline text-blue-600 dark:text-blue-400 hover:text-blue-500 hover:cursor-pointer"
               >
-                {row.original.rpl}
+                {row.original.parameters}
               </span>
             ),
           },
           ...["m1","m2","m3"].map((key) => ({
-            accessorKey: key.toUpperCase(),
+            accessorKey: key,
+            header: key.toUpperCase(),
             cell: ({ getValue }) => {
               const val = getValue();
               return val ? Number(val).toLocaleString("en-IN") : "-";
@@ -182,19 +197,20 @@ console.log(UserID);
 
          const columnsQuarters = [
           {
-            accessorKey: "rpl",
+            accessorKey: "parameters",
             header: "",
             cell: ({ row }) => (
               <span
               
                 // className="underline text-blue-600 dark:text-blue-400 hover:text-blue-500 hover:cursor-pointer"
               >
-                {row.original.rpl}
+                {row.original.parameters}
               </span>
             ),
           },
           ...["q1","q2","q3"].map((key) => ({
-            accessorKey: key.toUpperCase(),
+            accessorKey: key,
+            header: key.toUpperCase(),
             cell: ({ getValue }) => {
               const val = getValue();
               return val ? Number(val).toLocaleString("en-IN") : "-";
@@ -205,19 +221,20 @@ console.log(UserID);
 
          const columnsYears = [
           {
-            accessorKey: "rpl",
+            accessorKey: "parameters",
             header: "",
             cell: ({ row }) => (
               <span
               
                 // className="underline text-blue-600 dark:text-blue-400 hover:text-blue-500 hover:cursor-pointer"
               >
-                {row.original.rpl}
+                {row.original.parameters}
               </span>
             ),
           },
           ...["y1","y2","y3"].map((key) => ({
-            accessorKey: key.toUpperCase(),
+            accessorKey: key,
+            header: key.toUpperCase(),
             cell: ({ getValue }) => {
               const val = getValue();
               return val ? Number(val).toLocaleString("en-IN") : "-";
@@ -227,11 +244,10 @@ console.log(UserID);
         ];
 
 
-         const [open, setOpen] = useState(false)
-  const [value, setValue] = useState("")
+       
 
 
-    if (isLoading) return <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center' }}>
+    if (isLoading || isClinicLoading || clinicLoading) return <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center' }}>
 <Spinner/></div>;
 
   return (
@@ -274,6 +290,50 @@ console.log(UserID);
             ))}
           </SelectContent>
         </Select> */}
+        <Popover open={openClinic} onOpenChange={setOpenClinic}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={openClinic}
+          className="w-[200px] justify-between"
+        >
+          {valueClinic
+            ? ClinicList?.find((framework) => framework.clinicId === valueClinic)?.clinicName
+            : "Select Clinic..."}
+          <ChevronsUpDown className="opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[200px] p-0">
+        <Command>
+          <CommandInput placeholder="Search clinic..." className="h-9" />
+          <CommandList>
+            <CommandEmpty>No Clinic found.</CommandEmpty>
+            <CommandGroup>
+              {ClinicList?.map((framework) => (
+                <CommandItem
+                  key={framework.clinicId}
+                  value={framework.clinicName}
+                  onSelect={(currentValue) => {
+                    setValueClnic(framework.clinicId === valueClinic ? "" : framework.clinicId)
+                    setOpenClinic(false)
+                    setValue("")
+                  }}
+                >
+                  {framework?.clinicName}
+                  <Check
+                    className={cn(
+                      "ml-auto",
+                      valueClinic === framework?.clinicId ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
 <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
@@ -329,18 +389,19 @@ console.log(UserID);
         {statCards.map((item) =>
         
         {
-          // const stats = cardsData;
-          // console.log(stats);
-          
-  // const value = stats?.[item?.key];
-          return (
+           const rawValue = item.value;
+  const formattedValue =
+    item.key.includes("revenue")
+      ? `₹ ${Number(rawValue || 0).toLocaleString("en-IN")}`
+      : Number(rawValue || 0).toLocaleString("en-IN");
+          return (  
           <Card key={item.title} className="bg-white dark:bg-gray-800 text-center shadow-md hover:shadow-xl transition-all">
             <CardContent className="p-5 flex flex-col items-center space-y-2">
               <div>{item.icon}</div>
               <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
                 {item.title}
               </p>
-              <h2 className="text-l whitespace-nowrap font-bold text-gray-900 dark:text-white"> {item.key.includes("revenue") ? `₹ ${Number(value).toLocaleString("en-IN")}` : value}
+              <h2 className="text-l whitespace-nowrap font-bold text-gray-900 dark:text-white"> {formattedValue}
 </h2>
             </CardContent>
           </Card>
@@ -354,7 +415,7 @@ console.log(UserID);
                     Last 3 days Summary
                   </h3>
     
-                 <GenericTable data={data} columns={columns}  showSorting={false} showPagination={false} />
+                 <GenericTable data={clinicData?.[0]?.daysSummarylist} columns={columns}  showSorting={false} showPagination={false} />
     </CardContent>
     </Card>
 <Card className="bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm border dark:border-gray-700 p-0 transition-all">
@@ -363,7 +424,7 @@ console.log(UserID);
                     Last 3 Weeks Summary
                   </h3>
     
-                 <GenericTable data={data} columns={columnsWeeks}  showSorting={false} showPagination={false}/>
+                 <GenericTable data={clinicData?.[0]?.weeksSummarylist} columns={columnsWeeks}  showSorting={false} showPagination={false}/>
     </CardContent>
     </Card>
 <Card className="bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm border dark:border-gray-700 p-0 transition-all">
@@ -372,7 +433,7 @@ console.log(UserID);
                     Last 3 Months Summary
                   </h3>
     
-                 <GenericTable data={data} columns={columnsMonths}  showSorting={false} showPagination={false}/>
+                 <GenericTable data={clinicData?.[0]?.monthsSummarylist} columns={columnsMonths}  showSorting={false} showPagination={false}/>
     </CardContent>
     </Card>
 <Card className="bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm border dark:border-gray-700 p-0 transition-all">
@@ -381,7 +442,7 @@ console.log(UserID);
                     Last 3 Quarters Summary
                   </h3>
     
-                 <GenericTable data={data} columns={columnsQuarters}  showSorting={false} showPagination={false}/>
+                 <GenericTable data={clinicData?.[0]?.quartersSummarylist} columns={columnsQuarters}  showSorting={false} showPagination={false}/>
     </CardContent>
     </Card>
 <Card className="bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm border dark:border-gray-700 p-0 transition-all">
@@ -390,7 +451,7 @@ console.log(UserID);
                     Last 3 Years Summary
                   </h3>
     
-                 <GenericTable data={data} columns={columnsYears}  showSorting={false} showPagination={false}/>
+                 <GenericTable data={clinicData?.[0]?.yearsSummarlist} columns={columnsYears}  showSorting={false} showPagination={false}/>
     </CardContent>
     </Card>
 </section>

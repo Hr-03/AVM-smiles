@@ -54,7 +54,7 @@ import { useRouter } from "next/navigation";
 import { setParameterType } from "@/store/slices/parameterType";
 import { useDispatch } from "react-redux";
 import { setHeaderData } from "@/store/slices/headerSlice";
-import { getDashboardCountData } from "@/api/dashboardCount";
+import { dashboardCount, getDashboardCountData } from "@/api/dashboardCount";
 import { useQuery } from "@tanstack/react-query";
 import {
   flexRender,
@@ -87,7 +87,7 @@ export default function DashboardPage() {
     const { data:dashCountData, isLoading:dashLoading, isError, error:dashError } = useQuery({
         queryKey: ["dashboardCount",region,UserID,period],
          queryFn: () =>
-        getDashboardCountData(
+       dashboardCount.getDashboardCountData(
           region,
           UserID,
           period

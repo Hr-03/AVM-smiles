@@ -31,10 +31,10 @@ function page() {
 
   const columns = useMemo(
     () => [
-      {
-        header: "Clinic Name",
-        accessorKey: "clinicName",
-      },
+      // {
+      //   header: "Clinic Name",
+      //   accessorKey: "clinicName",
+      // },
       {
         header: "Treatment Name",
         accessorKey: "treatmentName",
@@ -42,26 +42,50 @@ function page() {
       {
         header: "No. of Leads",
         accessorKey: "noOfLeads",
+        cell: (info) => {
+          const value = info.getValue();
+          return <p className=''>{Number(value)?.toLocaleString("en-IN")}</p>
+        }
       },
       {
         header: "No. of Patients",
         accessorKey: "noOfPatients",
+        cell: (info) => {
+          const value = info.getValue();
+          return <p className=''>{Number(value)?.toLocaleString("en-IN")}</p>
+        }
       },
       {
         header: "Revenue",
         accessorKey: "revenue",
+        cell: (info) => {
+          const value = info.getValue();
+          return <p className=''>{Number(value)?.toLocaleString("en-IN")}</p>
+        }
       },
       {
         header: "Procedure",
         accessorKey: "procedure",
+        cell: (info) => {
+          const value = info.getValue();
+          return <p className=''>{Number(value)?.toLocaleString("en-IN")}</p>
+        }
       },
       {
         header: "Revenue per Patient",
         accessorKey: "revenuePerPatient",
+        cell: (info) => {
+          const value = info.getValue();
+          return <p className=''>{Number(value)?.toLocaleString("en-IN")}</p>
+        }
       },
       {
         header: "Revenue per Treatment",
         accessorKey: "revenuePerTreatment",
+        cell: (info) => {
+          const value = info.getValue();
+          return <p className=''>{Number(value)?.toLocaleString("en-IN")}</p>
+        }
       },
     ],
     []

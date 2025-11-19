@@ -46,16 +46,33 @@ function page() {
       },
 
       {
+        header: "Visits",
+        accessorKey: "visits",
+      },
+
+      {
         header: "Revenue",
         accessorKey: "revenue",
+        cell: (info) => {
+          const value = info.getValue();
+          return <p className=''>{Number(value)?.toLocaleString("en-IN")}</p>
+        }
       },
       {
         header: "Procedure",
         accessorKey: "procedure",
+        cell: (info) => {
+          const value = info.getValue();
+          return <p className=''>{Number(value)?.toLocaleString("en-IN")}</p>
+        }
       },
       {
         header: "Revenue per Patient",
         accessorKey: "revenuePerPatient",
+        cell: (info) => {
+          const value = info.getValue();
+          return <p className=''>{Number(value)?.toLocaleString("en-IN")}</p>
+        }
       },
     ],
     []
@@ -110,7 +127,11 @@ function page() {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button
-                      onClick={() => refetch()}
+                      onClick={() =>{
+                         refetch()
+                        setfromDate("")
+                        settoDate("")
+                        }}
                       className="p-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md flex items-center justify-center"
                     >
                       <RefreshCcw className="w-5 h-5" />

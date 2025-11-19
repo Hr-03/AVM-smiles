@@ -38,22 +38,58 @@ function page() {
       {
         header: "No. of Leads",
         accessorKey: "noOfLeads",
+        cell: (info) => {
+          const value = info.getValue();
+          return <p className=''>{Number(value)?.toLocaleString("en-IN")}</p>
+        }
+      },
+      {
+        header: "Appointments",
+        accessorKey: "appointments",
+        cell: (info) => {
+          const value = info.getValue();
+          return <p className=''>{Number(value)?.toLocaleString("en-IN")}</p>
+        }
+      },
+      {
+        header: "Walk-ins",
+        accessorKey: "visitors",
+        cell: (info) => {
+          const value = info.getValue();
+          return <p className=''>{Number(value)?.toLocaleString("en-IN")}</p>
+        }
       },
       {
         header: "No. of Patients",
         accessorKey: "noOfPatients",
+        cell: (info) => {
+          const value = info.getValue();
+          return <p className=''>{Number(value)?.toLocaleString("en-IN")}</p>
+        }
       },
       {
         header: "Revenue",
         accessorKey: "revenue",
+        cell: (info) => {
+          const value = info.getValue();
+          return <p className=''>{Number(value)?.toLocaleString("en-IN")}</p>
+        }
       },
       {
         header: "Procedure",
         accessorKey: "procedure",
+        cell: (info) => {
+          const value = info.getValue();
+          return <p className=''>{Number(value)?.toLocaleString("en-IN")}</p>
+        }
       },
       {
         header: "Revenue per Patient",
         accessorKey: "revenuePerPatient",
+        cell: (info) => {
+          const value = info.getValue();
+          return <p className=''>{Number(value)?.toLocaleString("en-IN")}</p>
+        }
       },
     ],
     []
