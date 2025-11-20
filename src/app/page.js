@@ -32,7 +32,14 @@ export default function LoginPage() {
         login(form, {
           onSuccess: (res) => {
             dispatch(setCredentials({ token: res.token, user: res.userId , userData:res }));
-            router.push("/dashboard/admin");
+            console.log(res);
+            if(res.roleName=="1"){
+              router.push("/dashboard/clinic");
+            }
+            else{
+
+              router.push("/dashboard/admin");
+            }
           },
           onError: (err) => alert(err.response?.data?.message || "Login failed"),
         }); 
