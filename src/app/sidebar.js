@@ -85,7 +85,7 @@ export default function Sidebar({ open }) {
                     "w-full flex items-center gap-3 px-4 py-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors text-left"
                   )}
                 >
-                  <div className="w-6 h-6 flex items-center justify-center rounded bg-primary text-black text-xs">
+                  <div className="w-6 h-6 flex items-center justify-center rounded bg-primary text-white text-xs dark:text-black dark:bg-white">
                     {menu.menuName?.charAt(0)}
                   </div>
 

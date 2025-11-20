@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { LogOut, Menu } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { getUser } from "@/api/getUser";
 
 export default function HeaderLayout({ onToggle, sidebarOpen }) {
   const router = useRouter();
@@ -12,6 +13,13 @@ export default function HeaderLayout({ onToggle, sidebarOpen }) {
     localStorage.removeItem("token");
     router.push("/");
   };
+
+
+
+  let User=getUser();
+
+  console.log(User);
+  
 
   return (
     <header
@@ -33,7 +41,7 @@ export default function HeaderLayout({ onToggle, sidebarOpen }) {
 
       {/* Right Section: User + Logout */}
       <div className="flex items-center gap-3">
-        <span className="text-sm">User</span>
+        <span className="text-sm">{User?.userData?.userName}</span>
         <Button
           variant="outline"
           size="sm"

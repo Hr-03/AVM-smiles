@@ -290,7 +290,7 @@ console.log(cardsData);
             ))}
           </SelectContent>
         </Select> */}
-        <Popover open={openClinic} onOpenChange={setOpenClinic}>
+      {UserRole=="2"?  <Popover open={openClinic} onOpenChange={setOpenClinic}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
@@ -333,7 +333,7 @@ console.log(cardsData);
           </CommandList>
         </Command>
       </PopoverContent>
-    </Popover>
+    </Popover>:""}
 <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
