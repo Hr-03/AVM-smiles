@@ -26,25 +26,25 @@ export default function TreatmentUpdates() {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center p-4 ">
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-950 p-6 space-y-8">
       {/* <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
         className="w-full"
       > */}
-        <Card className="w-full shadow-2xl border rounded-2xl overflow-hidden backdrop-blur-sm bg-gray-900 py-0">
-          <CardHeader className="bg-blue-950 p-2 text-white">
-            <h2 className="text-xl sm:text-2xl font-semibold tracking-wide text-center">
+        <Card className="w-full shadow border rounded-lg overflow-hidden bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm">
+          <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100 p-4">
+            <h2 className="text-xl sm:text-2xl font-semibold tracking-wide text-center text-blue-900">
               Treatment Updates
             </h2>
           </CardHeader>
 
-          <CardContent className="p-6 sm:p-10 space-y-6 sm:space-y-8">
+          <CardContent className="p-6 sm:p-8 space-y-6 sm:space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Patient Selection */}
               <div>
-                <Label className="text-sm font-medium text-gray-700 dark:text-white">Patient</Label>
+                <Label className="text-sm font-medium text-gray-800 dark:text-white">Patient</Label>
                 <Select onValueChange={setPatient}>
                   <SelectTrigger className="mt-1 bg-white border-gray-300 focus:ring-indigo-500 w-full">
                     <SelectValue placeholder="Select Patient" />
@@ -61,7 +61,7 @@ export default function TreatmentUpdates() {
 
               {/* Ongoing Treatment Selection */}
               <div>
-                <Label className="text-sm font-medium text-gray-700 dark:text-white">Ongoing Treatment</Label>
+                <Label className="text-sm font-medium text-gray-800 dark:text-white">Ongoing Treatment</Label>
                 <Select onValueChange={setTreatment}>
                   <SelectTrigger className="mt-1 bg-white border-gray-300 focus:ring-indigo-500 w-full">
                     <SelectValue placeholder="Select Treatment" />
@@ -79,29 +79,29 @@ export default function TreatmentUpdates() {
 
             {/* Date of Procedure */}
             <div>
-              <Label className="text-sm font-medium text-gray-700 dark:text-white">Date of Procedure</Label>
+              <Label className="text-sm font-medium text-gray-800 dark:text-white">Date of Procedure</Label>
               <Input
                 type="text"
                 value={dateOfProcedure}
                 disabled
-                className="mt-1 bg-gray-100 text-gray-800 dark:text-white border-gray-200 rounded-md w-full"
+                className="mt-1 bg-white text-gray-800 dark:bg-gray-700 dark:text-white border-gray-200 rounded-md w-full"
               />
             </div>
 
             {/* Details */}
             <div>
-              <Label className="text-sm font-medium text-gray-700 dark:text-white">Details</Label>
+              <Label className="text-sm font-medium text-gray-800 dark:text-white">Details</Label>
               <Textarea
                 placeholder="Enter procedure details..."
                 value={details}
                 onChange={(e) => setDetails(e.target.value)}
-                className="mt-1 border-gray-300 focus-visible:ring-indigo-500 min-h-[120px] w-full"
+                className="mt-1 border-gray-300 focus-visible:ring-indigo-500 min-h-[120px] w-full bg-white text-gray-800 dark:bg-gray-700 dark:text-white"
               />
             </div>
 
             {/* Status */}
             <div className="w-full md:w-1/2">
-              <Label className="text-sm font-medium text-gray-700 dark:text-white">Status</Label>
+              <Label className="text-sm font-medium text-gray-800 dark:text-white">Status</Label>
               <Select onValueChange={setStatus}>
                 <SelectTrigger className="mt-1 bg-white border-gray-300 focus:ring-indigo-500 w-full">
                   <SelectValue placeholder="Select Status" />

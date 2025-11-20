@@ -67,7 +67,7 @@ function page() {
         }
       },
       {
-        header: "Revenue per Patient",
+        header: "Revenue per procedure",
         accessorKey: "revenuePerPatient",
         cell: (info) => {
           const value = info.getValue();
